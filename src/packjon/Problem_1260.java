@@ -5,65 +5,79 @@ import java.util.*;
 
 public class Problem_1260 {
 
+    static int[][] map;
+    static boolean[] visited;
     static StringBuilder sb = new StringBuilder();
-    static boolean[] check;
-    static int[][] branch;
-
-    static int node, line, start;
-    static Queue<Integer> queue = new LinkedList<>();
 
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        try (
+                BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        ) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            /* 정점의 갯수 -> Map size */
+            int N = Integer.parseInt(st.nextToken());
+            /* 간선의 갯수 -> 반복 횟수 */
+            int M = Integer.parseInt(st.nextToken());
+            /* 시작 정점 번호 */
+            int V = Integer.parseInt(st.nextToken());
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        node = Integer.parseInt(st.nextToken());
-        line = Integer.parseInt(st.nextToken());
-        start = Integer.parseInt(st.nextToken());
+            map = new int[N + 1][N + 1];
+            visited = new boolean[N + 1];
 
-        branch = new int[node + 1][node + 1];
-        check = new boolean[node + 1];
+            for (int i = 1; i <= M; i++) {
+                st = new StringTokenizer(br.readLine());
 
-        for (int i = 0; i < line; i++) {
-            st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
+                int x = Integer.parseInt(st.nextToken());
+                int y = Integer.parseInt(st.nextToken());
 
-            branch[a][b] = branch[b][a] = 1;
+                map[x][y] = map[y][x] = 1;
+            }
+
+            dfs(V);
+            sb.append(System.lineSeparator());
+            bw.write(sb.toString());
+            sb.setLength(0);
+
+            Arrays.fill(visited, false);
+
+            bfs(V);
+            bw.write(sb.toString());
+            bw.flush();
         }
-
-        dfs(start);
-        sb.append("\n");
-        Arrays.fill(check, false);
-
-        bfs(start);
-        System.out.println(sb.toString());
     }
 
-    public static void dfs(int start) {
-        check[start] = true;
-        sb.append(start + " ");
+    public static void dfs(int road) {
+        write(road);
 
-        for (int i = 0; i <= node; i++) {
-            if(branch[start][i] == 1 && !check[i]) {
+        int[] roads = map[road];
+        for (int i = 1; i < roads.length; i++) {
+            if (roads[i] == 1 && !visited[i]) {
                 dfs(i);
             }
         }
     }
 
-    public static void bfs(int start) {
-        queue.add(start);
-        check[start] = true;
+    public static void bfs(int road) {
+        Queue<Integer> queue = new LinkedList<>();
+        queue.offer(road);
+        write(road);
 
         while (!queue.isEmpty()) {
-            start = queue.poll();
-            sb.append(start + " ");
+            int now = queue.poll();
+            int[] roads = map[now];
 
-            for (int i = 0; i <= node; i++) {
-                if(branch[start][i] == 1 && !check[i]) {
-                    queue.add(i);
-                    check[i] = true;
+            for (int i = 1; i < roads.length; i++) {
+                if (roads[i] == 1 && !visited[i]) {
+                    queue.offer(i);
+                    write(i);
                 }
             }
         }
+    }
+
+    private static void write(int road) {
+        visited[road] = true;
+        sb.append(road).append(" ");
     }
 }
