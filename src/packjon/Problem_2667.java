@@ -2,8 +2,9 @@ package packjon;
 
 import java.awt.*;
 import java.io.*;
-import java.util.*;
-import java.util.List;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
 public class Problem_2667 {
 
