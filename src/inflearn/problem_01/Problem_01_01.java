@@ -1,10 +1,12 @@
-package inflearn;
+package inflearn.problem_01;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Scanner;
 
-public class Problem_01_02 {
+public class Problem_01_01 {
+
     public static String solution(String str) {
         for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
