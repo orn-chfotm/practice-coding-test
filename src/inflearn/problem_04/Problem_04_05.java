@@ -18,11 +18,11 @@ public class Problem_04_05 {
             }
         }
 
-        result = set.stream()
-                .skip(k - 1)
-                .findFirst()
-                .orElse(-1);
+        if (k > set.size()) return -1;
+        Iterator<Integer> it = set.iterator();
+        for (int i = 1; i < k; i++) it.next();
 
+        result = it.next();
         return result;
     }
 
