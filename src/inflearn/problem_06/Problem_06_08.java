@@ -6,31 +6,27 @@ import java.util.Scanner;
 public class Problem_06_08 {
 
     public int solution(int n, int m, int[] arr) {
-        int answer = 0;
+        int answer = -1;
 
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n - i - 1; j++) {
-                if (arr[j] > arr[j + 1]) {
-                    int temp = arr[j];
-                    arr[j] = arr[j + 1];
-                    arr[j + 1] = temp;
-                }
-            }
-        }
+        Arrays.sort(arr);
 
-        int left = 0, right = arr.length - 1, mid = 0;
-        while (arr[mid] != m) {
+        int left = 0, right = n - 1, mid;
+        while (left <= right) {
             mid = (left + right) / 2;
+
+            if (arr[mid] == m) {
+                answer = mid + 1;
+                break;
+            }
 
             if (arr[mid] < m) {
-                left = mid;
+                left = mid + 1;
             } else if (arr[mid] > m){
-                right = mid;
+                right = mid - 1;
             }
-            mid = (left + right) / 2;
         }
 
-        return mid + 1;
+        return answer;
     }
 
     public static void main(String[] args) {
