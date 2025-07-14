@@ -1,47 +1,51 @@
 package inflearn.problem_08;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Problem_08_05 {
 
     int n, m;
+    Integer[] arr;
     int answer = Integer.MAX_VALUE;
 
-    public int solution(int n, int m, int[] arr) {
+    public Problem_08_05(int n, int m, Integer[] arr) {
         this.n = n;
         this.m = m;
+        this.arr = arr;
+    }
 
-        dfs(n - 1, 0, m, arr);
-
+    public int solution() {
+        dfs(0, 0);
         return answer;
     }
 
-    public void dfs(int index, int count, int change, int[] arr) {
-        if (change < 0) return;
-        if (count >= answer) return;
+    public void dfs(int count, int sum) {
+        if (sum > m || count >= answer) return;
 
-        if (index < 0) {
-            if (change == 0) {
-                answer = Math.min(answer, count);
-            }
+        if (sum == m) {
+            answer = Math.min(answer, count);
             return;
         }
 
-        dfs(index, count + 1, change - arr[index], arr);
-        dfs(index - 1, count, change, arr);
+        for (int i = 0; i < n; i++) {
+            dfs(count + 1, sum + arr[i]);
+        }
     }
 
     public static void main(String[] args) {
-        Problem_08_05 main = new Problem_08_05();
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
-        int[] arr = new int[n];
+        Integer[] arr = new Integer[n];
         for (int i = 0; i < n; i++) {
             arr[i] = sc.nextInt();
         }
         int m = sc.nextInt();
 
-        System.out.println(main.solution(n, m, arr));
+        Arrays.sort(arr, Collections.reverseOrder());
+
+        Problem_08_05 main = new Problem_08_05(n, m, arr);
+        System.out.println(main.solution());
     }
 }
